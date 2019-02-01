@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# set -x
+
+# Bugs
+# I haven't thought about how to resume a session of this...
+# I put $1/${A} below for readability but $1 already ends in / - I could strip it out... maybe some filesystems would get upset with its presence
+# I didn't quote the paths - I'm assuming paths in Vault never have spaces...
+
+
+# Take location path 
+# read from that location and create a local path to store the output.
+# read the output and call ourselves 
+
+
+vault  list -format=yaml $1 | ( [ -d $1 ] || mkdir -p $1 && cd $1 && cat - | sed -e 's#^- ##g' > .list.out )
+
+egrep '/$' $1/.list.out | {
+	while read A
+	do
+		sleep 1
+		$0 $1/${A}
+	done
+}
+
+# EOF
