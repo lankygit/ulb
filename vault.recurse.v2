@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#set -x
+
+# This will list vault paths recursively, making a faithful copy in the filesystem
+# If it is interrupted, it can be resumed
+
+[ $# -ne 1 ] && {
+    echo "We take one argument - the location from which to start."
+    exit 1
+}
+
+[ ${1} = . ] && exit 1
+
+List=.list.txt
+
+# We echo the path we're called with - in effect, the path and all sub paths
+echo ${1}
+
+[ -f ${1}/${List} ] || {
+    mkdir -p ${1} && 
+    vault list -format=yaml ${1} | sed -e 's#^- ##g' > ${1}/${List}
+} 
+
+
+# We could modify this to echo the key names, too.
+egrep -v '/$' ${1}/${List} | ( cd ${1} && xargs -r touch )
+
+egrep '/$' ${1}/${List} | {
+    while read A
+    do
+        $0 $1/${A}
+    done
+}
+
+# EOF
