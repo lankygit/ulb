@@ -22,15 +22,14 @@ echo ${1}
     vault list -format=yaml ${1} | sed -e 's#^- ##g' > ${1}/${List}
 } 
 
-
-# We could modify this to echo the key names, too.
-egrep -v '/$' ${1}/${List} | ( cd ${1} && xargs -r touch )
-
 egrep '/$' ${1}/${List} | {
     while read A
     do
         ${0} ${1}/${A}
     done
 }
+
+# I tried the following *before* the path creation above but found a Vault location with key names the same as path names...
+egrep -v '/$' ${1}/${List} | ( cd ${1} && xargs -r touch )
 
 # EOF
