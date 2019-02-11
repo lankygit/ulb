@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# A wrapper to force logging of ssh sessions
+# screen has handy logging directives - I wish open-ssh client did...
+# even PuTTY has excellent logging!
+
+Y=$(date +%Y)
+M=$(date +%m)
+LOG=~/logs/${Y}/${M}
+
+# We could be more careful here - what if a file existed?
+
+[ -d ${LOG} ] || mkdir -p ${LOG}
+
+LOG="${LOG}/$(date +%Y-%m-%d_%T).log"
+
+# This is hardly necessary
+cat - << EOH >> ${LOG}
+We were started as $0
+with these args $@
+at $(date)
+EOH
+
+# Here, we get all the output - this includes TERM escape strings for colour, etc.
+# Would be nice if ssh had a log option like screen and putty
+
+case $1 in
+	git*)
+		/usr/bin/ssh $@
+		;;
+	*)
+                /usr/bin/ssh $@ | tee -a ${LOG}
+		;;
+esac
+
+# EOF
