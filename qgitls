@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Just a reminder for now
+# We can get info for all files
+# or those we specify
+
+git ls-files -z | xargs -0 -n1 -I{} -- git log -1 --format="%ai {}" {}
+
+# EOF

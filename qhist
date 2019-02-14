@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Purpose:
+# read a history file and re-express in the usual format
+
+# Why?
+# The files are stored with epoch dates which some of us can't read readily.
+# The history command doesn't have an option to read a different file - I'd like to do a PR to add that feature.
+# You could workaround with messy HIST* variables but on a production box, those vars are often read-only
+
+# bash will write timestamps to the history if the HISTTIMEFORMAT variable is set
+
+cat $1 | {
+  while read Tstamp
+  do
+    read entry
+    echo $(date --date '@'${Tstamp###}) ${entry}
+  done
+} | cat -n
+
+# EOF

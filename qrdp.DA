@@ -1,0 +1,13 @@
+#!/bin/bash
+# In case you wondered, this is a set of reminders
+# the rdesktop package is my favourite for RDP on Linux
+# getting the clipboard option and that I like 95% so I can see the real desktop underneath
+
+U=theuser
+Dom=thedom
+
+#rdesktop -g 95% -u __USER__ -d __DOMAIN__ -z -P __HOST__
+
+#rdesktop -g 2400x1300 -r clipboard:PRIMARYCLIPBOARD -u ${U} -d ${Dom} -z -P ${1}
+rdesktop -g 95% -r clipboard:PRIMARYCLIPBOARD -u ${U} -d ${Dom} -z -P ${1}
+

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+[ $(id -u) -gt 1 ] && { echo Need to be root ; pip search awscli | egrep '^awscli |^ ' ; exit 1 ; }
+
+OLD=$(aws --version 2>&1)
+echo $OLD
+pip install --upgrade awscli
+echo We had
+echo $OLD
+echo Now we have
+aws --version
+
+# EOF
