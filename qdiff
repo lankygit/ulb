@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Erm - add some defaults for diff -y for my large screen widths
+
+[ $# -lt 2 ] && { echo 'We need two files to compare, eh?' ; exit 1 ; }
+
+diff -y -W ${COLUMNS:-$(tput cols)} $*
+#diff -y -W ${COLUMNS:-$(stty size|cut -f2 -d\  )} $*
+
+# EOF
